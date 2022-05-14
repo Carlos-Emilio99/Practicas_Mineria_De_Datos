@@ -83,23 +83,27 @@ def k_means(points: List[np.array], k: int):
         xp = x[y == kl, 0]
         yp = x[y == kl, 1]
         plt.scatter(xp, yp)
-    plt.savefig("img/kmeans.png")
+    plt.savefig("C:\\Users\\carlo\\Desktop\\Mineria\\Practicas_Mineria_De_Datos\\P9.jpg")
     plt.close()
     return mean
 
 
-groups = [(20, 20, "grupo1"), (80, 40, "grupo2"), (200, 200, "grupo3")]
-df = generate_df(groups, 50)
-scatter_group_by("img/clusters.png", df, "x", "y", "label")
+df = pd.read_csv("C:\\Users\\carlo\\Desktop\\Mineria\\Practicas_Mineria_De_Datos\\Practica1\\nba_game_stats.csv")
+dfclust = pd.DataFrame()
+
+dfclust["TP"] = df["TeamPoints"]
+dfclust["OP"] = df["OpponentPoints"]
+dfclust["date"] = df["Date"]
+
+dfclust["date"] = pd.to_datetime(dfclust["date"], format = "%Y-%m-%d")
+dfclust["date"] =[str(anio.year) for anio in dfclust["date"]]
+dfclust
+
 list_t = [
     (np.array(tuples[0:2]), tuples[2])
-    for tuples in df.itertuples(index=False, name=None)
+    for tuples in dfclust.itertuples(index=False, name=None)
 ]
 points = [point for point, _ in list_t]
 labels = [label for _, label in list_t]
-# np.random.seed(0)
-kn = k_means(
-    points,
-    3,
-)
-print(kn)
+
+kn = k_means(points,3)
